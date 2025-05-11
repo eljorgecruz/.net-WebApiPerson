@@ -1,29 +1,29 @@
-# CRUD de Personas con ASP.NET Core y SQL Server
+# Person CRUD API
 
-Este es un proyecto sencillo desarrollado con ASP.NET Core y Entity Framework Core que implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para una entidad Persona. La base de datos utilizada es SQL Server.
+This is a simple ASP.NET Core Web API project that implements basic CRUD operations (Create, Read, Update, Delete) for managing people. Each person has an ID, Name, and Age.
 
-## 🧱 Tecnologías utilizadas
+The project uses Entity Framework Core for data access and SQL Server as the database.
+
+## 🧱 Technologies Used
 
 - ASP.NET Core
 - Entity Framework Core
 - SQL Server
-- Visual Studio
-- C#
-- Docker (opcional, si se usó contenedor para SQL Server)
+- Visual Studio 2022
+- .NET CLI
 
-## 📦 Características del proyecto
+## 🗂️ Features
 
-- CRUD completo para la entidad Persona.
-- Conexión a base de datos SQL Server utilizando EF Core.
-- Migraciones aplicadas mediante Entity Framework.
-- Arquitectura sencilla ideal para aprender lo básico de ASP.NET y bases de datos relacionales.
+- List all persons
+- Get a single person by ID
+- Create a new person
+- Update an existing person
+- Delete a person
 
-## 📄 Estructura de la entidad Persona
+## 📦 Data Model
 
-```csharp
-public class Person
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int Age { get; set; }
-}
+The `Person` model includes:
+
+- `int Id`
+- `string Name`
+- `int Age`
