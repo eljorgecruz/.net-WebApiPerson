@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiPerson.Context;
 using WebApiPerson.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApiPerson.Controllers
 {
@@ -32,7 +33,8 @@ namespace WebApiPerson.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(int id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = await _context.Persons
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (person == null)
             {
@@ -49,10 +51,18 @@ namespace WebApiPerson.Controllers
         {
             if (id != person.Id)
             {
-                return BadRequest();
+                return BadRequest("ID mismatch");
             }
 
-            _context.Entry(person).State = EntityState.Modified;
+            var existingPerson = await _context.Persons
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (existingPerson == null)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(existingPerson).CurrentValues.SetValues(person);
 
             try
             {
@@ -60,14 +70,14 @@ namespace WebApiPerson.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonExists(id))
+                bool personExists = await _context.Persons
+                    .AnyAsync(p => p.Id == id);
+
+                if (!personExists)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
